@@ -29,7 +29,8 @@ export default {
           this.$router.push("/home")
       },
       itemClick(index) {
-          this.currentIndex = index
+          this.currentIndex = index,
+          this.$emit("titleClick", index)
       }
   }
 }

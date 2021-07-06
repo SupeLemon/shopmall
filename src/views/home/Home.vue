@@ -5,7 +5,7 @@
       <scroll class="content" 
               ref="scroll" 
               :probe-type="3" 
-              @scroll="contentScroll"
+              @scroll="scroll"
               :pull-up-load="true"
               @pullingup="contentPullingUp">
         <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
@@ -14,7 +14,7 @@
         <tab-control :titles="titles" @tabClick="tabClick" ref="tabControl2"/>
         <goods-list :goods="showGoods"/>
       </scroll>
-      <back-top @click.native="backClick" v-show="backTopIsShow"></back-top>
+      <back-top @click.native="backClick" v-show="isShowbackTop"></back-top>
   </div>
 </template>
 
@@ -23,12 +23,11 @@ import NavBar from "components/common/navbar/NavBar.vue"
 import TabControl from 'components/content/tabControl/TabControl.vue'
 import GoodsList from "components/content/goods/GoodsList.vue"
 import Scroll from "components/common/scroll/Scroll"
-import BackTop from "components/content/backTop/BackTop"
 import HomeSwiper from "./childComps/HomeSwiper.vue"
 import RecommendView from './childComps/RecommendView.vue'
 import FeatureView from './childComps/FeatureView.vue'
 import {getHomeMultidata, getHomeGoods} from "network/home"
-import {debounce} from "common/debounce.js"
+import {itemListenerMixin, backTopMixin} from "common/mixin.js"
 
 export default {
     name: "Home",
@@ -40,7 +39,6 @@ export default {
         TabControl,
         GoodsList,
         Scroll,
-        BackTop
     },
     data(){
         return {
@@ -53,12 +51,12 @@ export default {
                 'sell': {page: 0, list: []}
             },
             currentType: "pop",
-            backTopIsShow: false,
             tabOffsetTop: 0,
             isTabShow: false,
             saveY: 0
         }
     },
+    mixins: [itemListenerMixin, backTopMixin],
     created() {
         //1.请求多个数据
         this.getHomeMultidata()
@@ -69,14 +67,6 @@ export default {
         //通过事件总线监听发射的事件
     },
     mounted() {
-        //图片加载完成后，让better-scroll重新计算高度
-        const refresh = debounce(this.$refs.scroll.refresh, 200)
-        this.$bus.$on("itemImageLoad", () => {
-            // console.log(this)
-            // this.$refs.scroll.refresh()
-            refresh()
-        })
-        //tab-control
     },
     methods: {
         /**
@@ -105,9 +95,9 @@ export default {
             // console.log("backClick")
             this.$refs.scroll.scrollTo(0, 0, 500)
         },
-        contentScroll(position) {
+        scroll(position) {
             // console.log(position)
-            this.backTopIsShow = (-position.y) > 1000
+            this.isShowbackTop = (-position.y) > 1000
             this.isTabShow = (-position.y) > this.tabOffsetTop
         },
         contentPullingUp() {
@@ -153,6 +143,7 @@ export default {
     deactivated() {
         this.saveY = this.$refs.scroll.getScrollY()
         // console.log(this.saveY)
+        this.$bus.$off("itemImageLoad", this.itemImgListener)
     }
 }
 </script>
