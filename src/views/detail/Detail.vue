@@ -3,6 +3,9 @@
       <!-- 导航 -->
       <detail-navbar @titleClick="titleClick" ref="nav"></detail-navbar>
       <scroll class="content" ref="scroll" :probe-type="3" @scroll="scroll">
+          <ul>
+          <li v-for="item in $store.state.cartList">{{item}}</li>
+      </ul>
         <detail-swiper :top-images="topImages"/>
         <detail-base-info :goods="goods"/>
         <detail-shop-info :shop="shop"/>
@@ -12,7 +15,7 @@
         <detail-recommend ref="recommend" :recommentList="recommendList"/>
       </scroll>
       <back-top @click.native="backClick" v-show="isShowbackTop"/>
-      <detail-bottom-bar/>
+      <detail-bottom-bar @addCart="addCart"/>
   </div>
 </template>
 
@@ -67,6 +70,18 @@ export default {
     },
     methods: {
         //事件监听
+        addCart() {
+            // console.log("111")
+            const product = {}
+            product.image = this.topImages[0]
+            product.title = this.goods.title
+            product.desc = this.goods.desc
+            product.price = this.goods.realPrice
+            product.iid = this.iid
+
+            //添加商品数据到购物车
+            this.$store.commit("addCart", product)
+        },
         titleClick(index) {
             // console.log(index)
             this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100)
