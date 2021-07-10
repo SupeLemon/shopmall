@@ -3,9 +3,6 @@
       <!-- 导航 -->
       <detail-navbar @titleClick="titleClick" ref="nav"></detail-navbar>
       <scroll class="content" ref="scroll" :probe-type="3" @scroll="scroll">
-          <ul>
-          <li v-for="item in $store.state.cartList">{{item}}</li>
-      </ul>
         <detail-swiper :top-images="topImages"/>
         <detail-base-info :goods="goods"/>
         <detail-shop-info :shop="shop"/>
@@ -15,7 +12,7 @@
         <detail-recommend ref="recommend" :recommentList="recommendList"/>
       </scroll>
       <back-top @click.native="backClick" v-show="isShowbackTop"/>
-      <detail-bottom-bar @addCart="addCart"/>
+      <detail-bottom-bar @addCart="addToCart"/>
   </div>
 </template>
 
@@ -33,6 +30,7 @@ import Scroll from "components/common/scroll/Scroll"
 import {getDetail, getRecommend, Goods, Shop, Param, Comment} from "network/detail.js"
 import {debounce} from "common/debounce.js"
 import {itemListenerMixin, backTopMixin} from "common/mixin.js"
+import { mapActions} from "vuex"
 export default {
     name: 'Detail',
     data() {
@@ -46,7 +44,9 @@ export default {
             commentsInfo: {},
             recommendList: [],
             themeTopYs: [],
-            currentIndex: 0
+            currentIndex: 0,
+            message: "",
+            show: false
         }
     },
     components: { 
@@ -59,7 +59,7 @@ export default {
         DetailRecommend,
         DetailCommentInfo,
         DetailBottomBar,
-        Scroll,
+        Scroll
     },
     created() {
         this.iid = this.$route.params.iid
@@ -69,8 +69,9 @@ export default {
         this.getRecommend()
     },
     methods: {
+        ...mapActions(["addCart"]),
         //事件监听
-        addCart() {
+        addToCart() {
             // console.log("111")
             const product = {}
             product.image = this.topImages[0]
@@ -80,7 +81,10 @@ export default {
             product.iid = this.iid
 
             //添加商品数据到购物车
-            this.$store.commit("addCart", product)
+            // this.$store.dispatch("addCart", product)
+            this.addCart(product).then(res => {
+               this.$toast.show(res, 1500)
+            })
         },
         titleClick(index) {
             // console.log(index)
