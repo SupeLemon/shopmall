@@ -3,8 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from "./store"
 import toast from "components/content/toast/index.js"
+import ElementUI from "element-ui"
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(toast)
+Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 

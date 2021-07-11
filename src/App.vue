@@ -3,13 +3,18 @@
     <keep-alive exclude="Detail">
       <router-view></router-view>
     </keep-alive>
-    <main-tab-bar/>   
+    <main-tab-bar v-show="$route.meta.showTab"/>   
   </div>
 </template>
 <script>
 import MainTabBar from './components/content/mainTabbar/MainTabBar.vue'
   export default {
     name: "app",
+    data() {
+      return {
+        isShow: true
+      }
+    },
     components: {
       MainTabBar
     }

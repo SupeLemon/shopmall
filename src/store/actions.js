@@ -1,4 +1,4 @@
-import { ADD_COUNTER, ADD_TO_CART, ADD_CART_ITEM, SUB_CART_ITEM } from "./mutation-type"
+import { ADD_COUNTER, ADD_TO_CART, ADD_CART_ITEM, SUB_CART_ITEM, ADD_USER, REMOVE_USER } from "./mutation-type"
 export default {
     addCart(context, payload) {
         return new Promise((resolve, reject) => {
@@ -26,5 +26,11 @@ export default {
         if (cartItem) {
             context.commit(SUB_CART_ITEM, cartItem)
         }
+    },
+    addUser(context, payload) {
+        context.commit(ADD_USER, payload)
+    },
+    removeUser(contenxt) {
+        contenxt.commit(REMOVE_USER)
     }
 }

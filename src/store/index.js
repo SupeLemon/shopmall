@@ -7,7 +7,8 @@ import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex)
 
 const state = {
-    cartList: []
+    cartList: [],
+    user: {}
 }
 const store = new Vuex.Store({
     state,

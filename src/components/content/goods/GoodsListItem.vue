@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-list-item" @click="itemClick">
+  <div v-if="Object.keys(goodsItem).length !== 0" class="goods-list-item" @click="itemClick">
     <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
         <p class="goods-title">{{goodsItem.title}}</p>
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
       showImage() {
-          return this.goodsItem.image || this.goodsItem.show.img
+          return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
       }
   }
 }

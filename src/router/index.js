@@ -11,6 +11,10 @@ const Profile = () =>
     import ("../views/profile/Profile")
 const Detail = () =>
     import ("views/detail/Detail")
+const Login = () =>
+    import ("views/login/Login")
+const Register = () =>
+    import ("views/register/Register")
 
 Vue.use(VueRouter)
 
@@ -20,20 +24,49 @@ const routes = [{
     },
     {
         path: "/home",
-        component: Home
+        component: Home,
+        meta: {
+            showTab: true
+        }
     },
     {
         path: "/category",
-        component: Category
+        component: Category,
+        meta: {
+            showTab: true
+        }
     }, {
         path: "/cart",
-        component: Cart
+        component: Cart,
+        meta: {
+            showTab: true
+        }
     }, {
         path: "/profile",
-        component: Profile
+        component: Profile,
+        meta: {
+            showTab: true
+        }
     }, {
         path: "/detail/:iid",
-        component: Detail
+        component: Detail,
+        meta: {
+            showTab: false
+        }
+    },
+    {
+        path: "/login",
+        component: Login,
+        meta: {
+            showTab: false
+        }
+    },
+    {
+        path: "/register",
+        component: Register,
+        meta: {
+            showTab: false
+        }
     }
 ]
 

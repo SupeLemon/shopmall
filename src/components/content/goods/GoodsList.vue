@@ -7,8 +7,6 @@
 
 <script>
 import GoodsListItem from "./GoodsListItem.vue"
-
-
 export default {
   name: "GoodsList",
   components: { 

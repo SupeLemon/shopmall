@@ -19,3 +19,24 @@ export function request(config) {
 
     return instance(config)
 }
+
+export function loginReq(config) {
+    const instance = axios.create({
+        baseURL: "http://localhost:8000",
+        timeout: 5000,
+        method: "post"
+    })
+    instance.interceptors.request.use(config => {
+        return config
+    }, err => {
+
+    })
+
+    instance.interceptors.response.use(res => {
+        return res
+    }, err => {
+
+    })
+
+    return instance(config)
+}
