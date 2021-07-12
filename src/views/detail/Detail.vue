@@ -28,7 +28,6 @@ import DetailRecommend from './childComps/DetailRecommend.vue'
 import DetailBottomBar from "./childComps/DetailBottomBar.vue"
 import Scroll from "components/common/scroll/Scroll"
 import {getDetail, getRecommend, Goods, Shop, Param, Comment} from "network/detail.js"
-import {debounce} from "common/debounce.js"
 import {itemListenerMixin, backTopMixin} from "common/mixin.js"
 import { mapActions} from "vuex"
 export default {

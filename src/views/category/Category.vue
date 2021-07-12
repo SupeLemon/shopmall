@@ -5,7 +5,7 @@
     </nav-bar>
     <div class="content">
       <tab-menu class="menu" :categories="categories" @selectItem="selectItem"/>
-      <scroll class="tab-content" ref="scroll">
+      <scroll class="tab-content" ref="scroll" @scroll="scroll" :probeType="3">
         <div>
           <tab-content-category :subcategories="showSubcategory" @imageLoad="imageLoad"/>
           <tab-control :titles='["综合", "新品", "销量"]' @tabClick="tabClick"/>
@@ -13,11 +13,13 @@
         </div>
       </scroll>
     </div>
+    <back-top @click.native="backClick" v-show="isShowbackTop"/>
   </div>
 </template>
 
 <script>
 import TabControl from '../../components/content/tabControl/TabControl.vue'
+import BackTop from '../../components/content/backTop/BackTop.vue'
 import Scroll from '../../components/common/scroll/Scroll.vue'
 import NavBar from '../../components/common/navbar/NavBar.vue'
 import TabMenu from './childComps/TabMenu.vue'
@@ -25,6 +27,7 @@ import TabContentCategory from './childComps/TabContentCategory.vue'
 import TabContentDetail from './childComps/TabContentDetail.vue'
 import {getCategory, getSubcategory, getCategoryDetail} from "network/category.js"
 import {debounce} from "common/debounce.js"
+import {backTopMixin} from "common/mixin.js"
 export default {
   name: "Category",
   data() {
@@ -41,8 +44,10 @@ export default {
     TabMenu,
     TabContentCategory,
     TabControl,
-    TabContentDetail
+    TabContentDetail,
+    BackTop
   },
+  mixins: [backTopMixin],
   created() {
     this.getCategory()
   },
@@ -72,8 +77,12 @@ export default {
           break;
       }
     },
+    scroll(position) {
+      // console.log(position)
+      this.isShowbackTop = (-position.y) > 1000
+    },
     imageLoad() {
-      console.log("1")
+      // console.log("1")
       const refresh = debounce(this.$refs.scroll.refresh, 50)
       refresh()
     },

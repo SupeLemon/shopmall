@@ -36,7 +36,7 @@ export default {
         align-items: center;
     }
     .category-item {
-        width: 100px;
+        width: 22.66667vw;
         height: 100px;
         /* margin-left: 5px; */
         text-align: center;
